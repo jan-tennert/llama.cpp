@@ -90,7 +90,7 @@ static __device__ __forceinline__ int __vsubss4(const int a, const int b) {
 }
 
 static __device__ __forceinline__ int __dp4a(const int a, const int b, int c) {
-#if defined(__gfx906__) || defined(__gfx908__) || defined(__gfx90a__) || defined(__gfx1030__)
+#if defined(__gfx906__) || defined(__gfx908__) || defined(__gfx90a__) || defined(__gfx1030__) || defined(__gfx1012__)
     c = __builtin_amdgcn_sdot4(a, b, c, false);
 #elif defined(__gfx1100__)
     c = __builtin_amdgcn_sudot4( true, a, true, b, c, false);
