@@ -13,7 +13,7 @@ int main(int argc, char ** argv) {
     params.repeat_last_n = 64;
     params.prompt = "The quick brown fox";
 
-    if (gpt_params_parse(argc, argv, params) == false) {
+    if (!gpt_params_parse(argc, argv, params)) {
         return 1;
     }
 
@@ -44,7 +44,7 @@ int main(int argc, char ** argv) {
         llama_free_model(model);
         return 1;
     }
-    auto tokens = llama_tokenize(ctx, params.prompt.c_str(), true);
+    auto tokens = llama_tokenize(ctx, params.prompt, true);
     auto n_prompt_tokens = tokens.size();
     if (n_prompt_tokens < 1) {
         fprintf(stderr, "%s : failed to tokenize prompt\n", __func__);
@@ -87,7 +87,7 @@ int main(int argc, char ** argv) {
         }
         llama_token_data_array candidates_p = { candidates.data(), candidates.size(), false };
         auto next_token = llama_sample_token(ctx, &candidates_p);
-        auto next_token_str = llama_token_to_str(ctx, next_token);
+        auto next_token_str = llama_token_to_piece(ctx, next_token);
         last_n_tokens_data.push_back(next_token);
 
         printf("%s", next_token_str.c_str());
@@ -147,7 +147,7 @@ int main(int argc, char ** argv) {
         }
         llama_token_data_array candidates_p = { candidates.data(), candidates.size(), false };
         auto next_token = llama_sample_token(ctx2, &candidates_p);
-        auto next_token_str = llama_token_to_str(ctx2, next_token);
+        auto next_token_str = llama_token_to_piece(ctx2, next_token);
         last_n_tokens_data.push_back(next_token);
 
         printf("%s", next_token_str.c_str());
